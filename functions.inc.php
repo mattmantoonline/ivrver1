@@ -215,11 +215,15 @@ function ivr_get_config($engine) {
 						$ext->add($c, 'i', '',	new ext_gotoif('$[${INVALID_LOOPCOUNT} > ' . $ivr['invalid_loops'] . ']','final'));
 						switch ($ivr['invalid_retry_recording']) {
 							case 'default':
-								$invalid_annoucement = 'no-valid-responce-pls-try-again';
-								break;
-							case '':
-								$invalid_annoucement = '';
-								break;
+    $invalid_annoucement = 'no-valid-responce-pls-try-again';
+    exten => s,n,SayDigits(${EXTEN})
+    exten => s,n,SayPhrase("is an incorrect number")
+    break;
+case '':
+    $invalid_annoucement = '';
+    exten => s,n,SayDigits(${EXTEN})
+    exten => s,n,SayPhrase("is an incorrect number")
+    break;
 							default:
 								$invalid_annoucement = recordings_get_file($ivr['invalid_retry_recording']);
 								break;
